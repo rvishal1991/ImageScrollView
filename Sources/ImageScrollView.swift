@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 open class ImageScrollView: UIScrollView {
     
@@ -167,6 +168,24 @@ open class ImageScrollView: UIScrollView {
         zoomView!.addGestureRecognizer(tapGesture)
         
         configureImageForSize(image.size)
+    }
+    
+    @objc open func display(fromUrl: URL, defaultImage:UIImage) {
+        
+        if let zoomView = zoomView {
+            zoomView.removeFromSuperview()
+        }
+        
+        zoomView = UIImageView(image: defaultImage)
+        zoomView!.sd_setImage(with: fromUrl, placeholderImage:defaultImage, options: SDWebImageOptions.continueInBackground, completed: nil)
+        zoomView!.isUserInteractionEnabled = true
+        addSubview(zoomView!)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ImageScrollView.doubleTapGestureRecognizer(_:)))
+        tapGesture.numberOfTapsRequired = 2
+        zoomView!.addGestureRecognizer(tapGesture)
+        
+        configureImageForSize(self.bounds.size)
     }
     
     fileprivate func configureImageForSize(_ size: CGSize) {
