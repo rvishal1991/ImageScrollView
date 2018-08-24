@@ -176,11 +176,10 @@ open class ImageScrollView: UIScrollView {
             zoomView.removeFromSuperview()
         }
         
-        zoomView = UIImageView(image: defaultImage)
-        zoomView!.sd_setImage(with: fromUrl, placeholderImage:defaultImage, options: SDWebImageOptions.continueInBackground, completed: nil)
+        zoomView = UIImageView(frame: self.bounds)
         zoomView!.isUserInteractionEnabled = true
         addSubview(zoomView!)
-        
+        zoomView!.sd_setImage(with: fromUrl, placeholderImage:defaultImage, options: SDWebImageOptions.continueInBackground, completed: nil)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(ImageScrollView.doubleTapGestureRecognizer(_:)))
         tapGesture.numberOfTapsRequired = 2
         zoomView!.addGestureRecognizer(tapGesture)
